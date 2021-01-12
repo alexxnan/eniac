@@ -31221,6 +31221,42 @@ a.text-muted:hover {
 }
 @charset "UTF-8";
 
+.text-blue {
+  color: #3490dc;
+}
+
+.text-indigo {
+  color: #6574cd;
+}
+
+.text-red {
+  color: #e3342f;
+}
+
+.text-orange {
+  color: #f6993f;
+}
+
+.text-cyan {
+  color: #6cb2eb;
+}
+
+.text-teal {
+  color: #4dc0b5;
+}
+
+.text-green {
+  color: #38c172;
+}
+
+.text-white {
+  color: #fff;
+}
+
+text-yellow {
+  color: #ffed4a;
+}
+
 /*!
  * Bootstrap v4.5.3 (https://getbootstrap.com/)
  * Copyright 2011-2020 The Bootstrap Authors
@@ -48273,6 +48309,12 @@ readers do not read off random characters that represent icons */
 
 .twitter:before {
   content: "";
+}
+
+.router-link-exact-active {
+  background-color: #3f51b5 !important;
+  color: #fff !important;
+  border-radius: 3px;
 }
 
 

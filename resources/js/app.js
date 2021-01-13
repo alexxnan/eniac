@@ -9,6 +9,24 @@ require('./bootstrap');
 window.Vue = require('vue').default;
 import { Form, HasError, AlertError } from 'vform'
 import moment from 'moment';
+import VueProgressBar from 'vue-progressbar';
+import Swal from 'sweetalert2';
+
+// SWEETALERT Alerta
+window.Swal=Swal;
+const toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer);
+        toast.addEventListener('mouseleave', Swal.resumeTimer);
+    }
+});
+window.toast=toast;
+
 
 window.form = Form
 Vue.component(HasError.name, HasError)
@@ -39,6 +57,30 @@ Vue.filter('upText',function (text){
 Vue.filter ('myDate',function (created){
     return moment(created).format('DD.MM.YYYY')
 })
+ //custom event pentru cerere HTTP
+
+window.Fire = new Vue();
+
+//Vue ProgressBar
+
+const options = {
+    color: '#00ba27',
+    failedColor: '#980303',
+    thickness: '10px',
+    transition: {
+        speed: '1.5s',
+        opacity: '0.5s',
+        termination: 300
+    },
+    autoRevert: true,
+    location: 'top',
+    inverse: false
+}
+
+Vue.use(VueProgressBar, options);
+
+
+
 
 /**
  * The following block of code may be used to automatically register your

@@ -29,6 +29,7 @@
         "admin-lte": "^3.0.5",
         "bootstrap": "^4.5.3",
         "moment": "^2.29.1",
+        "sweetalert2": "^10.13.0",
         "vform": "^1.0.1",
         "vue": "^2.6.12",
         "vue-progressbar": "^0.7.5",

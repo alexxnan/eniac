@@ -11,6 +11,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <title>ENIAC | CRM</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="/css/app.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper" id="app">
@@ -111,9 +112,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <router-link to="/dashboard" class="nav-link">
-                                    <i class="fas fa-circle nav-icon text-orange"></i>
-                                    <p class="text-white">Active Page</p>
+                                <router-link to="/users" class="nav-link">
+                                    <i class="fas fa-users-cog nav-icon text-orange"></i>
+                                    <p class="text-white">Users</p>
                                 </router-link>
                             </li>
                             <li class="nav-item">

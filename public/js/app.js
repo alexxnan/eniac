@@ -2097,8 +2097,10 @@ Vue.component(vform__WEBPACK_IMPORTED_MODULE_0__.AlertError.name, vform__WEBPACK
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
+      editmode: false,
       users: {},
       form: new vform__WEBPACK_IMPORTED_MODULE_0__.Form({
+        id: '',
         name: '',
         email: '',
         password: '',
@@ -2109,16 +2111,60 @@ Vue.component(vform__WEBPACK_IMPORTED_MODULE_0__.AlertError.name, vform__WEBPACK
     };
   },
   methods: {
-    loadUsers: function loadUsers() {
+    updateUser: function updateUser(id) {
       var _this = this;
+
+      Swal.fire({
+        title: 'Esti sigur?',
+        text: "Datele modificate nu mai pot fi refacute",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Actualizeaza'
+      }).then(function (result) {
+        if (result.isConfirmed) {
+          //Trimite request catre server pentru stergere
+          _this.$Progress.start(); //console.log('Merge Boss');
+
+
+          _this.form.put('api/user/' + _this.form.id).then(function () {
+            Swal.fire('Actualizat!', 'Datele au fost modificate', 'success');
+
+            _this.$Progress.finish();
+
+            $('#utilizatorNou').modal('hide');
+            Fire.$emit('Eveniment');
+          })["catch"](function () {
+            _this.$Progress.fail();
+
+            Swal.fire('Ceva nu a functionat!', 'Datele NU au fost modificate!', 'warning');
+          });
+        }
+      });
+    },
+    editModal: function editModal(user) {
+      this.editmode = true;
+      this.form.clear();
+      this.form.reset();
+      $('#utilizatorNou').modal('show');
+      this.form.fill(user);
+    },
+    newModal: function newModal() {
+      this.editmode = false;
+      this.form.reset();
+      $('#utilizatorNou').modal('show');
+    },
+    loadUsers: function loadUsers() {
+      var _this2 = this;
 
       axios.get("api/user").then(function (_ref) {
         var data = _ref.data;
-        return _this.users = data.data;
+        return _this2.users = data.data;
       });
     },
     deleteUser: function deleteUser(id) {
-      var _this2 = this;
+      var _this3 = this;
 
       Swal.fire({
         title: 'Esti sigur?',
@@ -2131,9 +2177,9 @@ Vue.component(vform__WEBPACK_IMPORTED_MODULE_0__.AlertError.name, vform__WEBPACK
       }).then(function (result) {
         if (result.isConfirmed) {
           //Trimite request catre server pentru stergere
-          _this2.form["delete"]('api/user/' + id).then(function () {
+          _this3.form["delete"]('api/user/' + id).then(function () {
             Swal.fire('Sters!', 'Contul a fost sters.', 'success');
-            Fire.$emit('StergeCont');
+            Fire.$emit('Eveniment');
           })["catch"](function () {
             Swal.fire('Ceva nu a functionat!', 'Contul NU a fost sters!', 'warning');
           });
@@ -2145,7 +2191,7 @@ Vue.component(vform__WEBPACK_IMPORTED_MODULE_0__.AlertError.name, vform__WEBPACK
       this.form.post('/api/user') // trimite catre baza de date
       .then(function () {
         //Notificare pentru creare cont
-        Fire.$emit('CreareCont'); //creaza eveniment ca sa faca refresh la tabel
+        Fire.$emit('Eveniment'); //creaza eveniment ca sa faca refresh la tabel
 
         $('#utilizatorNou').modal('hide'); // ascunde modal creare cont
 
@@ -2158,15 +2204,12 @@ Vue.component(vform__WEBPACK_IMPORTED_MODULE_0__.AlertError.name, vform__WEBPACK
     }
   },
   created: function created() {
-    var _this3 = this;
+    var _this4 = this;
 
     this.loadUsers(); //Actionam refresh pentru custom event de mai sus
 
-    Fire.$on('CreareCont', function () {
-      _this3.loadUsers();
-    });
-    Fire.$on('StergeCont', function () {
-      _this3.loadUsers();
+    Fire.$on('Eveniment', function () {
+      _this4.loadUsers();
     }); // setInterval(()=>this.loadUsers(),3000);
   }
 });
@@ -64183,7 +64226,28 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
     _c("div", { staticClass: "card mt-5" }, [
-      _vm._m(0),
+      _c("div", { staticClass: "card-header border-transparent" }, [
+        _c("h1", { staticClass: "card-title mt-2" }, [_vm._v("Utilizatori")]),
+        _vm._v(" "),
+        _c("div", { staticClass: "card-tools" }, [
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-success",
+              attrs: { type: "button" },
+              on: { click: _vm.newModal }
+            },
+            [
+              _c("i", { staticClass: "fas fa-user-plus fa-fw" }),
+              _vm._v(" Adauga\n                ")
+            ]
+          ),
+          _vm._v(" "),
+          _vm._m(0),
+          _vm._v(" "),
+          _vm._m(1)
+        ])
+      ]),
       _vm._v(" "),
       _c(
         "div",
@@ -64194,18 +64258,16 @@ var render = function() {
             attrs: { type: "text", name: "table_search", placeholder: "Cauta" }
           }),
           _vm._v(" "),
-          _vm._m(1),
+          _vm._m(2),
           _vm._v(" "),
           _c("div", { staticClass: "table-responsive" }, [
             _c("table", { staticClass: "table m-0" }, [
-              _vm._m(2),
+              _vm._m(3),
               _vm._v(" "),
               _c(
                 "tbody",
                 _vm._l(_vm.users, function(user) {
                   return _c("tr", { key: user.id }, [
-                    _c("td", [_vm._v(_vm._s(user.id))]),
-                    _vm._v(" "),
                     _c("td", [_vm._v(_vm._s(user.name))]),
                     _vm._v(" "),
                     _c("td", [_vm._v(_vm._s(user.email))]),
@@ -64217,7 +64279,18 @@ var render = function() {
                     _c("td", [_vm._v(_vm._s(_vm._f("myDate")(user.data)))]),
                     _vm._v(" "),
                     _c("td", [
-                      _vm._m(3, true),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-sm btn-success",
+                          on: {
+                            click: function($event) {
+                              return _vm.editModal(user)
+                            }
+                          }
+                        },
+                        [_c("i", { staticClass: "fa fa-edit blue" })]
+                      ),
                       _vm._v(" "),
                       _c(
                         "button",
@@ -64258,7 +64331,43 @@ var render = function() {
       [
         _c("div", { staticClass: "modal-dialog modal-dialog-centered" }, [
           _c("div", { staticClass: "modal-content" }, [
-            _vm._m(4),
+            _c("div", { staticClass: "modal-header" }, [
+              _c(
+                "h5",
+                {
+                  directives: [
+                    {
+                      name: "show",
+                      rawName: "v-show",
+                      value: !_vm.editmode,
+                      expression: "!editmode"
+                    }
+                  ],
+                  staticClass: "modal-title",
+                  attrs: { id: "utilizatorNouLabel" }
+                },
+                [_vm._v("Adauga Utilizator Nou")]
+              ),
+              _vm._v(" "),
+              _c(
+                "h5",
+                {
+                  directives: [
+                    {
+                      name: "show",
+                      rawName: "v-show",
+                      value: _vm.editmode,
+                      expression: "editmode"
+                    }
+                  ],
+                  staticClass: "modal-title",
+                  attrs: { id: "utilizatorNouLabel" }
+                },
+                [_vm._v("Editeaza Utilizator")]
+              ),
+              _vm._v(" "),
+              _vm._m(4)
+            ]),
             _vm._v(" "),
             _c(
               "form",
@@ -64266,7 +64375,7 @@ var render = function() {
                 on: {
                   submit: function($event) {
                     $event.preventDefault()
-                    return _vm.createUser($event)
+                    _vm.editmode ? _vm.updateUser() : _vm.createUser()
                   }
                 }
               },
@@ -64488,7 +64597,50 @@ var render = function() {
                   )
                 ]),
                 _vm._v(" "),
-                _vm._m(5)
+                _c("div", { staticClass: "modal-footer" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-danger",
+                      attrs: { type: "button", "data-bs-dismiss": "modal" }
+                    },
+                    [_vm._v("Renunta")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      directives: [
+                        {
+                          name: "show",
+                          rawName: "v-show",
+                          value: !_vm.editmode,
+                          expression: "!editmode"
+                        }
+                      ],
+                      staticClass: "btn btn-success",
+                      attrs: { type: "submit" }
+                    },
+                    [_vm._v("Adauga")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      directives: [
+                        {
+                          name: "show",
+                          rawName: "v-show",
+                          value: _vm.editmode,
+                          expression: "editmode"
+                        }
+                      ],
+                      staticClass: "btn btn-primary",
+                      attrs: { type: "submit" }
+                    },
+                    [_vm._v("Editeaza")]
+                  )
+                ])
               ]
             )
           ])
@@ -64502,45 +64654,27 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-header border-transparent" }, [
-      _c("h1", { staticClass: "card-title mt-2" }, [_vm._v("Utilizatori")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "card-tools" }, [
-        _c(
-          "button",
-          {
-            staticClass: "btn btn-success",
-            attrs: {
-              type: "button",
-              "data-bs-toggle": "modal",
-              "data-bs-target": "#utilizatorNou"
-            }
-          },
-          [
-            _c("i", { staticClass: "fas fa-user-plus fa-fw" }),
-            _vm._v(" Adauga\n                ")
-          ]
-        ),
-        _vm._v(" "),
-        _c(
-          "button",
-          {
-            staticClass: "btn btn-tool",
-            attrs: { type: "button", "data-card-widget": "collapse" }
-          },
-          [_c("i", { staticClass: "fas fa-minus" })]
-        ),
-        _vm._v(" "),
-        _c(
-          "button",
-          {
-            staticClass: "btn btn-tool",
-            attrs: { type: "button", "data-card-widget": "remove" }
-          },
-          [_c("i", { staticClass: "fas fa-times" })]
-        )
-      ])
-    ])
+    return _c(
+      "button",
+      {
+        staticClass: "btn btn-tool",
+        attrs: { type: "button", "data-card-widget": "collapse" }
+      },
+      [_c("i", { staticClass: "fas fa-minus" })]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "btn btn-tool",
+        attrs: { type: "button", "data-card-widget": "remove" }
+      },
+      [_c("i", { staticClass: "fas fa-times" })]
+    )
   },
   function() {
     var _vm = this
@@ -64558,8 +64692,6 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("thead", [
       _c("tr", [
-        _c("th", [_vm._v("ID")]),
-        _vm._v(" "),
         _c("th", [_vm._v("Nume")]),
         _vm._v(" "),
         _c("th", [_vm._v("Email")]),
@@ -64578,55 +64710,18 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("button", { staticClass: "btn btn-sm btn-success" }, [
-      _c("i", { staticClass: "fa fa-edit blue" })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-header" }, [
-      _c(
-        "h5",
-        { staticClass: "modal-title", attrs: { id: "utilizatorNouLabel" } },
-        [_vm._v("Adauga Utilizator Nou")]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-sm btn-danger",
-          attrs: {
-            type: "button",
-            "data-bs-dismiss": "modal",
-            "aria-label": "Close"
-          }
-        },
-        [_c("i", { staticClass: "fas fa-window-close" })]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-footer" }, [
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-danger",
-          attrs: { type: "button", "data-bs-dismiss": "modal" }
-        },
-        [_vm._v("Renunta")]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        { staticClass: "btn btn-success", attrs: { type: "submit" } },
-        [_vm._v("Adauga")]
-      )
-    ])
+    return _c(
+      "button",
+      {
+        staticClass: "btn btn-sm btn-danger",
+        attrs: {
+          type: "button",
+          "data-bs-dismiss": "modal",
+          "aria-label": "Close"
+        }
+      },
+      [_c("i", { staticClass: "fas fa-window-close" })]
+    )
   }
 ]
 render._withStripped = true

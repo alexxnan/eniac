@@ -65001,7 +65001,7 @@ var render = function() {
                           staticClass: "col-sm-2 control-label",
                           attrs: { for: "inputName" }
                         },
-                        [_vm._v("Name")]
+                        [_vm._v("Nume")]
                       ),
                       _vm._v(" "),
                       _c(
@@ -65024,7 +65024,7 @@ var render = function() {
                             attrs: {
                               type: "",
                               id: "inputName",
-                              placeholder: "Name"
+                              placeholder: "Nume"
                             },
                             domProps: { value: _vm.form.name },
                             on: {
@@ -65103,7 +65103,7 @@ var render = function() {
                           staticClass: "col-sm-2 control-label",
                           attrs: { for: "inputExperience" }
                         },
-                        [_vm._v("Experience")]
+                        [_vm._v("Experienta")]
                       ),
                       _vm._v(" "),
                       _c(
@@ -65123,7 +65123,7 @@ var render = function() {
                             class: { "is-invalid": _vm.form.errors.has("bio") },
                             attrs: {
                               id: "inputExperience",
-                              placeholder: "Experience"
+                              placeholder: "Experienta"
                             },
                             domProps: { value: _vm.form.bio },
                             on: {
@@ -65151,7 +65151,7 @@ var render = function() {
                           staticClass: "col-sm-2 control-label",
                           attrs: { for: "photo" }
                         },
-                        [_vm._v("Profile Photo")]
+                        [_vm._v("Fotografie Profil")]
                       ),
                       _vm._v(" "),
                       _c("div", { staticClass: "col-sm-12" }, [
@@ -65170,7 +65170,7 @@ var render = function() {
                           staticClass: "col-sm-12 control-label",
                           attrs: { for: "password" }
                         },
-                        [_vm._v("Passport (leave empty if not changing)")]
+                        [_vm._v("Parola")]
                       ),
                       _vm._v(" "),
                       _c(
@@ -65232,7 +65232,7 @@ var render = function() {
                               }
                             }
                           },
-                          [_vm._v("Update")]
+                          [_vm._v("Actualizeaza")]
                         )
                       ])
                     ])
@@ -65257,7 +65257,7 @@ var staticRenderFns = [
           _c("div", { staticClass: "description-block" }, [
             _c("h5", { staticClass: "description-header" }, [_vm._v("3,200")]),
             _vm._v(" "),
-            _c("span", { staticClass: "description-text" }, [_vm._v("SALES")])
+            _c("span", { staticClass: "description-text" }, [_vm._v("Vanzari")])
           ])
         ]),
         _vm._v(" "),
@@ -65275,9 +65275,7 @@ var staticRenderFns = [
           _c("div", { staticClass: "description-block" }, [
             _c("h5", { staticClass: "description-header" }, [_vm._v("35")]),
             _vm._v(" "),
-            _c("span", { staticClass: "description-text" }, [
-              _vm._v("PRODUCTS")
-            ])
+            _c("span", { staticClass: "description-text" }, [_vm._v("ZONE")])
           ])
         ])
       ])
@@ -65296,7 +65294,7 @@ var staticRenderFns = [
               staticClass: "nav-link",
               attrs: { href: "#activity", "data-toggle": "tab" }
             },
-            [_vm._v("Activity")]
+            [_vm._v("Activitate")]
           )
         ]),
         _vm._v(" "),
@@ -65307,7 +65305,7 @@ var staticRenderFns = [
               staticClass: "nav-link active show",
               attrs: { href: "#settings", "data-toggle": "tab" }
             },
-            [_vm._v("Settings")]
+            [_vm._v("Setari Cont")]
           )
         ])
       ])
@@ -65319,7 +65317,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "tab-pane", attrs: { id: "activity" } }, [
       _c("h3", { staticClass: "text-center" }, [
-        _vm._v("Display User Activity")
+        _vm._v("#ADAUGA_ACTIVITATE_USER_AICI")
       ])
     ])
   }

@@ -21,4 +21,12 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+Route::get('invoice', function(){
+    return view('invoice');
+});
+
+Route::get('comanda', function(){
+    return view('comanda');
+});
+
 Route::get('{path}', [App\Http\Controllers\HomeController::class, 'index'])->where( 'path', '([A-z\d\-/_.]+)?' ); //de retinut! trebuie adaugat \ inainte de -

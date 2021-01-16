@@ -13,7 +13,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <link rel="stylesheet" href="/css/app.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
 </head>
-<body class="hold-transition sidebar-mini">
+<body class="hold-transition sidebar-mini sidebar-collapse">
 <div class="wrapper" id="app">
 
     <!-- Navbar -->
@@ -26,16 +26,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
         </ul>
 
         <!-- SEARCH FORM -->
-        <form class="form-inline ml-3">
-            <div class="input-group input-group-sm">
-                <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
-                <div class="input-group-append">
-                    <button class="btn btn-navbar" type="submit">
+            <div class="input-group input-group-sm w-50" style="margin-left: 20%; margin-right: 20%;">
+                <input class="form-control form-control-navbar" @keyup="searchIt" v-model="search" type="search" placeholder="Cauta" aria-label="Search">
+               <!-- <div class="input-group-append">
+                    <button class="btn btn-navbar" @click="searchIt">
                         <i class="fas fa-search"></i>
                     </button>
-                </div>
+                </div> -->
             </div>
-        </form>
 
         <!-- Right navbar links -->
         <ul class="navbar-nav ml-auto">
@@ -58,18 +56,21 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- Brand Logo -->
         <a href="index3.html" class="brand-link">
             <img src="./img/logo.png" alt="ENIAC Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-            <span class="brand-text font-weight-light">ENIAC CRM</span>
+            <span class="brand-text font-weight-light">ENIAC</span>
         </a>
 
         <!-- Sidebar -->
         <div class="sidebar">
             <!-- Sidebar user panel (optional) -->
-            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+            <div class="user-panel mt-3 d-flex">
                 <div class="image">
-                    <img src="./img/profil.png" class="img-circle elevation-2" alt="User Image">
+                    <img src="./img/profile/{{Auth::user()->photo}}" class="img-circle" alt="User Image">
                 </div>
-                <div class="info">
-                    <a href="#" class="d-block">{{ Auth::user()->name }}</a>
+                <div class="info" style="margin-bottom:-5%;">
+                    <a href="#" class="d-block"><h5 style="margin-top:-6%;">{{ Auth::user()->name }}</h5>
+                        <p style="margin-top:-6%;">{{Auth::user()->type}}</p>
+                    </a>
+
                 </div>
             </div>
 
@@ -101,6 +102,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         </router>
                     </li>
 
+                    @can('isAdmin')
                     <li class="nav-item">
                         <a href="#" class="nav-link" style="background-color: #1d643b; border-radius: 3px;">
                             <i class="nav-icon fas fa-code-branch text-green"></i>
@@ -110,7 +112,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 <i class="right fas fa-angle-left"></i>
                             </p>
                         </a>
-                        <ul class="nav nav-treeview">
+                        <ul class="nav nav-treeview ml-3">
                             <li class="nav-item">
                                 <router-link to="/users" class="nav-link">
                                     <i class="fas fa-users-cog nav-icon text-orange"></i>
@@ -118,14 +120,22 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 </router-link>
                             </li>
                             <li class="nav-item">
-                                <router-link to="/profile" class="nav-link">
-                                    <i class="fas fa-circle nav-icon text-orange"></i>
-                                    <p class="text-white">Active Page</p>
+                                <router-link to="/factura" class="nav-link">
+                                    <i class="fas fa-file-invoice-dollar nav-icon text-orange"></i>
+                                    <p class="text-white">Factura</p>
                                 </router-link>
                             </li>
+
+                            <li class="nav-item">
+                                <router-link to="/orders" class="nav-link">
+                                    <i class="fas fa-file-invoice-dollar nav-icon text-blue"></i>
+                                    <p class="text-white">Comanda</p>
+                                </router-link>
+                            </li>
+
                         </ul>
                     </li>
-
+                    @endcan
 
                     <li class="nav-item">
                         <router-link to="/profile" class="nav-link">
@@ -168,6 +178,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <div class="container-fluid">
 
                 <router-view></router-view>
+
                 <vue-progress-bar></vue-progress-bar>
 
             </div><!-- /.container-fluid -->
@@ -187,16 +198,23 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- /.control-sidebar -->
 
     <!-- Main Footer -->
-    <footer class="main-footer">
+    <footer class="main-footer text-red">
         <!-- To the right -->
-        <div class="float-right d-none d-sm-inline">
-            Anything you want
+        <div class="float-right d-none d-sm-inline text-red">
+            Optimal Solution Provider for your business!
         </div>
         <!-- Default to the left -->
         <strong>Copyright &copy; 2021 <a href="https://nanit.ro">nanit.ro</a>.</strong> All rights reserved.
     </footer>
 </div>
 <!-- ./wrapper -->
+
+
+@auth
+    <script>
+        window.user = @json(auth()->user())
+    </script>
+@endauth
 
 <!-- REQUIRED SCRIPTS -->
 <script src="/js/app.js"></script>

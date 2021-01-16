@@ -12,6 +12,12 @@ import moment from 'moment';
 import VueProgressBar from 'vue-progressbar';
 import Swal from 'sweetalert2';
 
+import Gate from "./Gate.js";
+Vue.prototype.$gate = new Gate(window.user);
+
+Vue.component('not-found', ()=> import('./components/NotFound.vue'));
+Vue.component('pagination', ()=> import('laravel-vue-pagination'));
+
 // SWEETALERT Alerta
 window.Swal=Swal;
 const toast = Swal.mixin({
@@ -33,6 +39,10 @@ Vue.component(HasError.name, HasError)
 Vue.component(AlertError.name, AlertError)
 
 
+
+
+
+
 import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
@@ -41,6 +51,9 @@ let routes = [
     { path: '/profile', component: require('./components/Profile.vue').default },
     { path: '/users', component: require('./components/Users.vue').default },
     { path: '/developer', component: require('./components/Developer.vue').default },
+    { path: '/factura', component: require('./components/Factura.vue').default },
+    { path: '/orders', component: require('./components/Orders.vue').default },
+    { path: '*', component: require('./components/NotFound.vue').default },
 ]
 
 
@@ -105,4 +118,16 @@ Vue.component('dashboard', require('./components/Dashboard.vue'));
 const app = new Vue({
     el: '#app',
     router,
+    data:{
+        search:'',
+    },
+    methods:{
+        searchIt:_.debounce(()=>{
+            console.log("Cautam...");
+            Fire.$emit('Cautare');
+        },1000),
+        printme() {
+            window.print();
+        }
+    }
 });

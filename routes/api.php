@@ -24,4 +24,5 @@ Route::apiResource('profile','App\Http\Controllers\API\UserController');
 
 Route::get('profile','App\Http\Controllers\API\UserController@profile');
 Route::get('findUser', 'App\Http\Controllers\API\UserController@search');
+Route::get('comanda', 'App\Http\Controllers\API\ComenziController@create');
 Route::put('profile', 'App\Http\Controllers\API\UserController@updateProfile');
